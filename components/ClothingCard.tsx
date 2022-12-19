@@ -1,29 +1,26 @@
-import { Text, Card, Button } from "@nextui-org/react";
+import { Text, Card, Button, Row } from "@nextui-org/react";
 
-export default function ClothingCard() {
+export default function ClothingCard({ url, name }) {
   return (
     <Card css={{ mw: 400 }}>
       <Card.Header css={{ position: "absolute", zIndex: 1, top: "20px" }}>
         <Text h4 color='black'>
-          Shirt
+          {name}
         </Text>
       </Card.Header>
-      <Card.Image
-        src='/test_assets/shirt1.webp'
-        objectFit='cover'
-        width='100%'
-        height={400}
-      />
+      <Card.Image src={url} objectFit='cover' width='100%' height={400} />
       <Card.Footer
         isBlurred
         css={{
           position: "absolute",
-          bgBlur: "#0f111466",
+          bgBlur: "#00000080",
           bottom: 0,
           zIndex: 1,
         }}
       >
-        <Button>Wearing</Button>
+        <Row justify='center'>
+          <Button color='gradient'>Wearing</Button>
+        </Row>
       </Card.Footer>
     </Card>
   );

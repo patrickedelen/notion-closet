@@ -3,6 +3,25 @@ const aws = require('aws-sdk');
 import multer from 'multer'
 import multerS3 from 'multer-s3'
 import nextConnect from 'next-connect'
+import { Client } from '@notionhq/client'
+
+import { NextApiRequest, NextApiResponse } from 'next'
+
+const notion = new Client({ auth: process.env.NOTION_TOKEN })
+const db = process.env.NOTION_DB || ''
+
+interface RequestForm {
+  files: [
+    {
+      location: string
+    }
+  ]
+  body: {
+    timesWorn: string,
+    cost: string,
+    name: string
+  }
+}
 
 
 aws.config.update({
@@ -32,16 +51,53 @@ const uploadRoute = nextConnect({
   onError(error, req, res) {
     console.log('got error', error)
   },
-  onNoMatch(req, res) {
+  onNoMatch(req, res: NextApiResponse) {
     res.status(405).json({ err: "method not allowed" })
   }
 })
 
 uploadRoute.use(multerUpload.array('photo'))
 
-uploadRoute.post((req, res) => {
+uploadRoute.post(async (req: RequestForm, res: NextApiResponse) => {
+
   console.log("req", req.files)
-  res.json({ data: "test" })
+  console.log('body', req.body)
+  // res.json({ data: "test" })
+
+  try {
+    const response = await notion.pages.create({
+      parent: {
+        type: "database_id",
+        database_id: db
+      },
+      properties: {
+        "Image Link": {
+          "url": req.files[0].location
+        },
+        "Times Worn": {
+          "number": parseInt(req.body.timesWorn)
+        },
+        "Cost": {
+          "number": parseInt(req.body.cost)
+        },
+        "Name": {
+          "title": [
+            {
+            "text": {
+              "content": req.body.name
+            }
+            }
+          ]
+        }
+      }
+    })
+
+    return res.json({ success: true, msg: "item added" })
+  } catch (err) {
+    return res.json({ "err": "could not add item" })
+  }
+
+
 })
 
 
