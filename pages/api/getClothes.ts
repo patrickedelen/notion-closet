@@ -9,13 +9,11 @@ interface ClothesPage {
     properties: {
       [key:string]: {
         number?: number
-        title?: [
-          {
+        title?: Array<{
             text: {
-              content: string
+              content: string | null
             }
-          }
-        ]
+        }>
         url?: string
       }
     }
@@ -41,12 +39,15 @@ const getClothes = async (_: NextApiRequest, res: NextApiResponse) => {
 
   if (clothes && clothes?.results.length > 0) {
     const results = clothes.results.map((page: ClothesPage) => {
-      return {
-        timesWorn: page.properties["Times Worn"].number,
-        cost: page.properties["Cost"].number || 0,
-        name: page.properties["Name"].title[0].text.content,
-        imageUrl: page.properties["Image Link"].url,
-        id: page.id
+      if (page?.properties["Name"] && page?.properties["Name"].title) {
+
+        return {
+          timesWorn: page.properties["Times Worn"].number,
+          cost: page.properties["Cost"].number || 0,
+          name: page?.properties["Name"].title[0].text.content,
+          imageUrl: page.properties["Image Link"].url,
+          id: page.id
+        }
       }
     })
 

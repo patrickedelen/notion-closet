@@ -51,8 +51,8 @@ const uploadRoute = nextConnect({
   onError(error, req, res) {
     console.log('got error', error)
   },
-  onNoMatch(req, res: NextApiResponse) {
-    res.status(405).json({ err: "method not allowed" })
+  onNoMatch(req, res) {
+    res.write("Disallowed request")
   }
 })
 

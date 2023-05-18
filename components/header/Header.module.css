@@ -1,0 +1,62 @@
+.headerContainer {
+    height: 115px;
+    background-color: #010101;
+    box-shadow: 0px 6px 6px rgba(0, 0, 0, 0.25);
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (max-width: 800px) {
+    .titleLarge {
+        display: none;
+    }
+}
+@media (min-width: 801px) {
+    .titleSmall {
+        display: none;
+    }
+}
+
+.titleLarge {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 40px;
+    line-height: 50px;
+    /* identical to box height */
+    text-align: center;
+    letter-spacing: 0.5px;
+    margin: 0;
+}
+.titleSmall {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 50px;
+    line-height: 50px;
+    /* identical to box height */
+    text-align: center;
+    letter-spacing: 0.5px;
+    margin: 0;
+}
+
+.uploadLink {
+    font-weight: 700;
+    font-size: 80px;
+    color: white;
+    position: absolute;
+    right: 20px;
+    top: -9px;
+    transition: 0.25s all ease;
+}
+
+.uploadLink:hover {
+    color: white;
+    font-size: 90px;
+    top: -18px;
+    right: 16px;
+    opacity: 1;
+
+}
+

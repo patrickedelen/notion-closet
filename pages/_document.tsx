@@ -8,13 +8,16 @@ import Document, {
 } from "next/document";
 import { ServerStyleSheet } from "styled-components";
 import { CssBaseline } from "@nextui-org/react";
+import React from "react";
 
-import Header from "@/components/Header";
+
+import Header from "@/components/header/Header";
 
 export default class MyDocument extends Document {
   static async getInitialProps(
     ctx: DocumentContext
   ): Promise<DocumentInitialProps> {
+
     const sheet = new ServerStyleSheet();
     const originalRenderPage = ctx.renderPage;
 
@@ -39,6 +42,8 @@ export default class MyDocument extends Document {
       sheet.seal();
     }
   }
+
+
 
   render() {
     return (

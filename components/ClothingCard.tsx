@@ -1,6 +1,6 @@
 import { Text, Card, Button, Row } from "@nextui-org/react";
 
-export default function ClothingCard({ url, name }) {
+export default function ClothingCard({ url, name }: { url: string, name: string }) {
   return (
     <Card css={{ mw: 400 }}>
       <Card.Header css={{ position: "absolute", zIndex: 1, top: "20px" }}>
