@@ -1,0 +1,56 @@
+.formContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 20px;
+}
+
+.title {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+
+.iconsContainer {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    flex-shrink: 2;
+    gap: 15px;
+}
+
+.menuItem {
+    display: block;
+    position: absolute;
+    top: 50%; /* at the middle of the parent */
+    left: 50%;
+    width: 4em;
+    height: 4em;
+    margin: -2em;
+}
+
+.iconButton {
+    background-color: white;
+    padding: 5px;
+    border-radius: 5px;
+    color: black;
+    height: 60px;
+    width: 60px;
+    flex: 1 0 30%;
+}
+
+.close {
+    background-color: white;
+    padding: 5px;
+    border-radius: 5px;
+    color: black;
+    margin-top: 50px;
+    width: 100px;
+    height: 50px;
+}

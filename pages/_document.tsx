@@ -48,8 +48,9 @@ export default class MyDocument extends Document {
   render() {
     return (
       <Html lang='en'>
-        <Head>{CssBaseline.flush()}</Head>
-        <Header />
+        <Head>
+          {CssBaseline.flush()}
+        </Head>
         <body>
           <Main />
           <NextScript />

@@ -1,4 +1,4 @@
-
+// @ts-nocheck
 const aws = require('aws-sdk');
 import multer from 'multer'
 import multerS3 from 'multer-s3'
@@ -22,7 +22,6 @@ interface RequestForm {
     name: string
   }
 }
-
 
 aws.config.update({
   accessKeyId: process.env.AWS_ACCESS_KEY,

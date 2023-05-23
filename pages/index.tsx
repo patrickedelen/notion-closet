@@ -1,136 +1,83 @@
-import Head from "next/head";
-import { useState, useEffect, useRef, useCallback, SyntheticEvent } from "react";
+import { Container, Grid } from "@nextui-org/react";
 import axios from "axios";
-import Image from "next/image";
-import Webcam from "react-webcam";
+import { useState, useEffect } from "react";
+import dynamic from 'next/dynamic'
 
-import { Button, Input } from "@nextui-org/react";
-import styled from "styled-components";
+import ClothingCard from "@/components/ClothingCard";
 
-import styles from '../styles/Home.module.css'
+import Clothes from '@/components/pages/Clothes';
 
-import ClothingCard from "../components/ClothingCard";
+type ClothesEndpointReturn = {
+  data: [ClothesItem];
+};
+type ClothesItem = {
+  timesWorn: number;
+  cost: number;
+  name: string;
+  imageUrl: string;
+  id: string;
+};
 
-// type FileEventTarget = EventTarget & { files: FileList }
+type ClothesProps = {
+  clothesData?: [ClothesItem];
+  err?: string;
+};
 
-interface ChangeEvent<T = Element> extends SyntheticEvent<T> {
-  target: EventTarget & T;
+// function ClothesPage() {
+//   const [clothes, setClothes] = useState<[ClothesItem] | []>([]);
+//   const [err, setErr] = useState("");
+
+//   useEffect(() => {
+//       try {
+//         const clothes: ClothesEndpointReturn = await axios.get(
+//           `/api/getClothes`
+//         );
+//         setClothes(clothes.data);
+//       } catch (err: string) {
+//         console.error("could not execute get clothes endpoint", err);
+//         setErr(err);
+//       }
+//   }, [])
+
+//   return (
+//     <Container fluid>
+//       <Grid.Container gap={2}>
+//         {err && <p>{err}</p>}
+//         {clothes.map((el: ClothesItem) => (
+//           <Grid xs={12} sm={6} md={4} justify='center' key={el.id}>
+//             <ClothingCard url={el.imageUrl} name={el.name} />
+//           </Grid>
+//         ))}
+//       </Grid.Container>
+//     </Container>
+//   );
+// }
+
+// add loading component while fetching clothes
+const DynamicClothes = dynamic(() => import('@/components/pages/Clothes'), { ssr: false })
+
+export default function ClothesPage() {
+  return <DynamicClothes />;
 }
 
-const videoConstraints = {
-  facingMode: "environment",
-}
 
-export default function Home() {
-  const webcamRef = useRef<Webcam>(null);
 
-  const [file, setFile] = useState<any>();
-  const [preview, setPreview] = useState<string | undefined>("");
-  const [outfitData, setOutfitData] = useState({
-    cost: "",
-    timesWorn: 0,
-    name: "",
-  });
-
-  const capture = useCallback(() => {
-    const img = webcamRef.current?.getScreenshot();
-  }, [webcamRef])
-
-  useEffect(() => {
-    if (!file) {
-      setPreview(undefined);
-      return;
-    }
-    const previewUrl = URL.createObjectURL(file);
-    setPreview(previewUrl);
-
-    // @ts-ignore
-    return () => URL.revokeObjectURL(preview);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [file]);
-
-  const onFileChange = (e: any) => {
-    // @ts-ignore
-    console.log(e.target.files[0]);
-    // @ts-ignore
-    setFile(e.target.files[0]);
-  };
-  const onTextChange = (e: any) => {
-    if (e?.target?.value) {
-    console.log("e", e.target.value, e.target.id);
-    setOutfitData({
-      ...outfitData,
-      [e.target.id]: e.target.value,
-    });
-  };
-  const resetState = () => {
-    setFile(null);
-    setOutfitData({
-      cost: "",
-      timesWorn: 0,
-      name: "",
-    });
-  };
-
-  const runUpload = () => {
-    const formData = new FormData();
-    formData.append("photo", file);
-    formData.append("cost", `${outfitData.cost}`);
-    formData.append("name", outfitData.name);
-    formData.append("timesWorn", "0");
-    axios.post("/api/uploadImage", formData).then((data) => console.log(data));
-  };
-  return (
-    <div>
-      <Head>
-        <title>Notion Closet</title>
-        <meta name='description' content='todo' />
-        <link rel='icon' href='/favicon.ico' />
-      </Head>
-      <main>
-        {preview && (
-          <Image
-            alt='Uploaded clothes item'
-            src={preview}
-            height={200}
-            width={200}
-          />
-        )}
-
-        <Webcam
-          height={1000}
-          width={1000}
-          videoConstraints={videoConstraints}
-          ref={webcamRef}
-        />
-        <Input
-          id='file'
-          type='file'
-          onChange={onFileChange}
-          aria-label='file-upload'
-        />
-        Cost
-        <Input
-          id='cost'
-          type='number'
-          onChange={onTextChange}
-          aria-label='cost'
-          value={outfitData.cost}
-        />
-        Name
-        <Input
-          id='name'
-          type='text'
-          onChange={onTextChange}
-          aria-label='name'
-          value={outfitData.name}
-        />
-        <Button onPress={runUpload}>Run Upload</Button>
-        <Button onPress={resetState} color='error'>
-          Clear
-        </Button>
-      </main>
-    </div>
-  );
-}
-}
+// export async function getStaticProps() {
+//   try {
+//     const clothes: ClothesEndpointReturn = await axios.get(
+//       `/api/getClothes`
+//     );
+//     // console.log("clothes", clothes);
+//     return {
+//       props: {
+//         clothesData: clothes.data,
+//       },
+//     };
+//   } catch (err) {
+//     console.error("could not execute get clothes endpoint", err);
+//     return {
+//       props: {
+//         err: "could not get clothes",
+//       },
+//     };
+//   }

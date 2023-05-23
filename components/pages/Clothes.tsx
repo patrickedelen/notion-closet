@@ -7,6 +7,11 @@ import ClothingCard from "@/components/ClothingCard";
 import Card from "@/components/card/Card"
 
 import { motion } from 'framer-motion'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faCoffee } from '@fortawesome/free-solid-svg-icons'
+
+import { useSelector, useDispatch } from "react-redux"
+import { selectLoading, selectClothes, getClothes, setFormState } from '../../store/clothesSlice'
 
 type ClothesEndpointReturn = {
   data: [ClothesItem];
@@ -38,8 +43,16 @@ const variants = {
 export default function ClothesPageDeferred() {
   const [clothes, setClothes] = useState<[ClothesItem] | []>([]);
   const [err, setErr] = useState("");
+  const dispatch = useDispatch();
+
+
+  const loading = useSelector(selectLoading)
+  const reduxClothes = useSelector(selectClothes)
+
+  console.log('redux state', loading, reduxClothes)
 
   useEffect(() => {
+      dispatch(getClothes())
       try {
         axios.get(
           `/api/getClothes`
@@ -51,10 +64,13 @@ export default function ClothesPageDeferred() {
       }
   }, []);
 
+
+
   return (
     <>
     <Container fluid>
       <Grid.Container gap={2}>
+      <FontAwesomeIcon icon={faCoffee} />
         {err && <p>{err}</p>}
         {clothes.map((el: ClothesItem, i) => (
           <Grid xs={12} sm={6} md={4} justify='center' key={el.id}>
