@@ -8,7 +8,7 @@ import {
   Row,
 } from "@nextui-org/react";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import styles from './Header.module.css'
 
@@ -16,9 +16,11 @@ import { motion, AnimatePresence } from 'framer-motion'
 
 import HeaderForm from '@/components/headerForm'
 import SuccessScreen from '@/components/successScreen'
+import ClothesBar from '@/components/clothesBar'
 
 import { useSelector, useDispatch } from "react-redux"
 import { selectFormOpen, setFormState, selectSuccessScreenOpen } from "../../store/clothesSlice";
+import { selectShowClothesBar, selectOutfitFormOpen } from "../../store/outfitSlice";
 
 const PlusLink = () => {
   return (
@@ -57,13 +59,34 @@ export default function Header() {
   const formOpen = useSelector(selectFormOpen)
   const successScreenOpen = useSelector(selectSuccessScreenOpen)
 
+
+
+  const showClothesBar = useSelector(selectShowClothesBar)
+  const outfitFormOpen = useSelector(selectOutfitFormOpen)
+  const [waitClothesBar, setWaitClothesBar] = useState(false)
+  useEffect(() => {
+      if (showClothesBar) {
+        setWaitClothesBar(true)
+      } else {
+        setTimeout(() => {
+          setWaitClothesBar(false)
+        }, 100)
+      }
+  }, [showClothesBar])
+
   console.log('formOpen', formOpen)
+  console.log('clothes info', showClothesBar, outfitFormOpen)
+
+  const headerHeight = formOpen || successScreenOpen  ? '90vh' : outfitFormOpen ? '30vh' : showClothesBar ? '20vh' : '100px'
+  const shadowHeaderHeight = showClothesBar ? '20vh' : '100px'
+
+  console.log('header height', headerHeight)
 
   return (
-    <header className={styles.shadowHeader}>
+    <motion.header animate={{ height: shadowHeaderHeight }}>
       <motion.div 
         animate={{
-          height: formOpen || successScreenOpen ? '80vh' : 100,
+          height: headerHeight,
         }}
         className={styles.headerContainer}
       >
@@ -106,6 +129,9 @@ export default function Header() {
             </motion.div>
           }
         </AnimatePresence>
+
+        <ClothesBar />
+
         <div className={styles.headerBottom}></div>
       </motion.div>
       {/* {
@@ -113,6 +139,6 @@ export default function Header() {
 
         </span>
       } */}
-    </header>
+    </motion.header>
   );
 }

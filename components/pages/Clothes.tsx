@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { Container, Grid } from "@nextui-org/react";
 import axios from "axios";
 import { useState, useEffect } from "react";
@@ -49,7 +51,7 @@ const LoadingContainer = () => {
         className={styles.loadingContainer}
         initial={{ opacity: 0, y: -100 }}
         animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: 100 }}
+        exit={{ opacity: 0, y: 200 }}
       >
         <FontAwesomeIcon icon={faShirt} size="7x" color="black" className="fa-bounce" />
       </motion.div>
@@ -81,7 +83,7 @@ export default function ClothesPageDeferred() {
       //   console.error("could not execute get clothes endpoint, here you go", err);
       //   setErr(err);
       // }
-  }, []);
+  }, [dispatch]);
 
 
 
@@ -104,6 +106,8 @@ export default function ClothesPageDeferred() {
         }
         </AnimatePresence>
         {err && <p>{err}</p>}
+        <div  className={styles.cardGrid}>
+
         {!loading && clothesData.map((el: ClothesItem, i) => (
           <Grid xs={12} sm={6} md={4} justify='center' key={i}>
             <motion.div
@@ -117,6 +121,7 @@ export default function ClothesPageDeferred() {
             </motion.div>
           </Grid>
         ))}
+        </div>
       </Grid.Container>
     </Container>
     </>

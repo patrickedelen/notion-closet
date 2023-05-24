@@ -1,6 +1,12 @@
 .shadowHeader {
-    height: 80px;
+    height: 110px;
+    transition: all 0.2s ease;
 }
+.shadowHeaderClothesBar {
+    height: 20vh;
+    transition: all 0.2s ease;
+}
+
 .headerContainer {
     position: fixed;
     /* height: 100px; */
@@ -15,6 +21,7 @@
     align-items: center;
 
 }
+
 .headerRow {
     display: flex;
     flex-direction: row;

@@ -7,3 +7,7 @@
     justify-content: center;
     filter: drop-shadow(2px 2px 2px grey);
 }
+
+.cardGrid:first-child {
+    margin-top: 0px;
+}

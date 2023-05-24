@@ -41,11 +41,11 @@ const types = {
             'OTHER'
         ],
         icons: [
-            <FontAwesomeIcon icon={faShirt} size="2x" />,
-            <FontAwesomeIcon icon={faTableColumns} size="2x" />,
-            <FontAwesomeIcon icon={faSnowflake} size="2x" />,
-            <FontAwesomeIcon icon={faShoePrints} size="2x" />,
-            <FontAwesomeIcon icon={faHatCowboy} size="2x" />,
+            <FontAwesomeIcon icon={faShirt} size="2x" key="1" />,
+            <FontAwesomeIcon icon={faTableColumns} size="2x" key="2" />,
+            <FontAwesomeIcon icon={faSnowflake} size="2x" key="3" />,
+            <FontAwesomeIcon icon={faShoePrints} size="2x" key="4" />,
+            <FontAwesomeIcon icon={faHatCowboy} size="2x" key="5"/>,
         ],
         title: 'what type of piece is this?'
     },
@@ -101,6 +101,7 @@ export default function HeaderForm() {
         <motion.div className={styles.formContainer}
             initial={{ opacity: 0, y: -100 }}
             animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -100 }}
         >
             <h3 className={styles.title}>{title}</h3>
             <div className={styles.iconsContainer}

@@ -1,11 +1,11 @@
-import { createGlobalStyle, ThemeProvider } from "styled-components";
+// import { createGlobalStyle, ThemeProvider } from "styled-components";
 
 import { NextUIProvider, useSSR } from "@nextui-org/react";
 import { Component } from "react";
 import dynamic from "next/dynamic";
 import { SSRProvider } from 'react-aria'
 import { Provider } from "react-redux";
-import { NextThemesProvider } from 'next-themes'
+import { ThemeProvider } from 'next-themes'
 import Header from "@/components/header/Header";
 import HeaderCloseBar from "@/components/header/HeaderCloseBar";
 

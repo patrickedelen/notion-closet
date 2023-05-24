@@ -190,6 +190,11 @@ export const selectFormOpen = (state) => state.clothes.formOpen
 export const selectFormType = (state) => state.clothes.formType
 export const selectNewItem = (state) => state.clothes.newItem
 
+export const selectItemById = (id) => (state) => {
+    console.log('selectItemById', id)
+    return state.clothes.data.filter((item) => item.id === id)[0]
+}
+
 export const selectItemUploading = (state) => state.clothes.itemUploading
 export const selectSuccessScreenOpen = (state) => state.clothes.successScreenOpen
 

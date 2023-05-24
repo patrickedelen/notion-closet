@@ -1,4 +1,4 @@
-
+// @ts-nocheck
 import { Client } from '@notionhq/client'
 import { NextApiRequest, NextApiResponse } from 'next'
 
@@ -39,7 +39,7 @@ const getClothes = async (_: NextApiRequest, res: NextApiResponse) => {
 
   if (clothes && clothes?.results.length > 0) {
     const results = clothes.results.map((page: ClothesPage) => {
-      console.log(page.properties)
+      console.log(page)
       if (page?.properties["Name"] && page?.properties["Name"].title) {
 
         return {
@@ -47,6 +47,7 @@ const getClothes = async (_: NextApiRequest, res: NextApiResponse) => {
           cost: page?.properties["Cost"].rich_text[0]?.text?.content,
           name: page?.properties["Name"].title[0]?.text?.content,
           imageUrl: page.properties["Image Link"].url,
+          id: page.id
         }
         return { "msg": "error" }
         // return {

@@ -6,6 +6,9 @@ import { Text, Button, Row } from "@nextui-org/react";
 import { motion } from 'framer-motion'
 
 import { useEffect, useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux';
+
+import { isWearingItem, addItem, removeItem } from '../../store/outfitSlice';
 
 const ImageWithFallback = (props) => {
     const { src, fallbackSrc, ...rest } = props;
@@ -44,7 +47,7 @@ const ImageWithFallback = (props) => {
             onError={() => {
                 setFallbackStyle(styles.fallbackImage)
                 setImgSrc(fallbackSrc)
-                pollForFullImage()
+                // pollForFullImage() -- fix
             }}
             alt="clothing item"
             className={[styles.image, fallbackStyle]}
@@ -58,14 +61,20 @@ const variants = {
 };
 
 export default function Card({ url, name, id}: { url: string, name: string, id: string }) {
-    const [wearing, setWearing] = useState(false)
+    const dispatch = useDispatch()
+
+    const wearing = useSelector(isWearingItem(id))
+    console.log('isWearing', wearing)
     const [heroFound, setHeroFound] = useState(false)
     const heroUrl = url.replace('notion-closet', 'wywt-output') + '-hero'
     // const heroUrl = 'https://wywt-output.s3.amazonaws.com/testimg7.webp-hero'
 
     const handleClick = () => {
-        setWearing(!wearing)
-        console.log('fire request')
+        if (wearing) {
+            dispatch(removeItem(id))
+        } else {
+            dispatch(addItem(id))
+        }
     }
     
     return (

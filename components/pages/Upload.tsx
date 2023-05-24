@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { Container, Grid } from "@nextui-org/react";
 import axios from "axios";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import dynamic from 'next/dynamic'
 import Webcam from 'react-webcam'
 
@@ -61,7 +61,7 @@ export default function UploadPageDeferred() {
         newItem.name && newItem.type && newItem.cost && newItem.age && imageB64 !== ''
     )
 
-    const checkUserPerms = () => {
+    const checkUserPerms = useCallback(() => {
         if (webcamRef?.current?.state?.hasUserMedia) {
             setTimeout(() => {
                 setWebcamIsOpen(true)
@@ -71,10 +71,11 @@ export default function UploadPageDeferred() {
                 checkUserPerms()
             }, 250)
         }
-    }
+    }, [webcamRef])
+    
     useEffect(() => {
         checkUserPerms()
-    }, [])
+    }, [checkUserPerms])
 
     useEffect(() => {
         if (webcamRef?.current?.state?.hasUserMedia) {

@@ -1,0 +1,65 @@
+.barContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    background: transparent;
+
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
+.outfitFormContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    background: transparent;
+
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    background-color: red;
+}
+
+.clothesItem {
+    height: 50px;
+    width: 50px;
+    border-radius: 5px;
+    background: white;
+
+    align-items: center;
+    justify-content: center;
+}
+
+.image {
+    height: 40px;
+    width: 40px;
+    border-radius: 5px;
+}
+
+.openButton {
+    color: white;
+    background-color: transparent;
+    outline: none;
+    border: none;
+
+    position: absolute;
+    right: 31px;
+}
+
+.confirmButton {
+        background-color: white;
+        padding: 5px;
+        border-radius: 5px;
+        color: black;
+        margin-top: 15px;
+        width: 150px;
+        height: 60px;
+        font-size: 26px;
+        font-weight: 600;
+}
