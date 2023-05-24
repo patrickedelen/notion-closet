@@ -1,0 +1,22 @@
+.successContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    width: 100%;
+    
+}
+
+.close {
+    background-color: white;
+    padding: 5px;
+    border-radius: 5px;
+    color: black;
+    margin-top: 50px;
+    width: 150px;
+    height: 60px;
+    font-size: 30px;
+    font-weight: 600;
+}
+

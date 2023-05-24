@@ -21,4 +21,13 @@
     margin-top: 15px;
 }
 
+.fallbackImage > img {
+    filter: blur(10px);
+    border-radius: 50px;
+}
+
+.image {
+    transition: .5s all ease-in-out;
+    filter: drop-shadow(2px 2px 2px grey);
+}
 

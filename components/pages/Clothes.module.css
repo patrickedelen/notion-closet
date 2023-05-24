@@ -1,0 +1,9 @@
+.loadingContainer {
+    position: absolute;
+    width: calc(100% - 40px);
+    margin: 200px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    filter: drop-shadow(2px 2px 2px grey);
+}

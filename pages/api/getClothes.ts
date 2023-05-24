@@ -44,7 +44,7 @@ const getClothes = async (_: NextApiRequest, res: NextApiResponse) => {
 
         return {
           timesWorn: page.properties["Times Worn"].number,
-          cost: page.properties["Cost"].number || 0,
+          cost: page?.properties["Cost"].rich_text[0]?.text?.content,
           name: page?.properties["Name"].title[0]?.text?.content,
           imageUrl: page.properties["Image Link"].url,
         }

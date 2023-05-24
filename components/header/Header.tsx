@@ -12,12 +12,13 @@ import { useState } from "react";
 
 import styles from './Header.module.css'
 
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 
 import HeaderForm from '@/components/headerForm'
+import SuccessScreen from '@/components/successScreen'
 
 import { useSelector, useDispatch } from "react-redux"
-import { selectFormOpen, setFormState } from "../../store/clothesSlice";
+import { selectFormOpen, setFormState, selectSuccessScreenOpen } from "../../store/clothesSlice";
 
 const PlusLink = () => {
   return (
@@ -46,9 +47,15 @@ export default function Header() {
   const closeHeader = () => {
     console.log('got close event')
     dispatch(setFormState({ formOpen: false }))
+    
+  }
+  const closeSuccessScreen = () => {
+    console.log('got close event')
+    dispatch(selectSuccessScreenOpen(false))
   }
 
   const formOpen = useSelector(selectFormOpen)
+  const successScreenOpen = useSelector(selectSuccessScreenOpen)
 
   console.log('formOpen', formOpen)
 
@@ -56,7 +63,7 @@ export default function Header() {
     <header className={styles.shadowHeader}>
       <motion.div 
         animate={{
-          height: formOpen ? '90vh' : 100,
+          height: formOpen || successScreenOpen ? '80vh' : 100,
         }}
         className={styles.headerContainer}
       >
@@ -70,13 +77,35 @@ export default function Header() {
           <PlusLink />
         </div>
 
-        {
-          formOpen && 
-          <>
-            <HeaderForm />
-            <span className={styles.closeArea} onClick={closeHeader}></span>
-          </>
-        }
+
+        <AnimatePresence>
+          {
+            formOpen && 
+            <motion.div
+              initial={{ opacity: 0.5 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              style={{ marginTop: '10vh'}}
+            >
+              <HeaderForm />
+              <span className={styles.closeArea} onClick={closeHeader}></span>
+            </motion.div>
+          }
+        </AnimatePresence>
+        <AnimatePresence>
+          {
+            successScreenOpen && 
+            <motion.div
+              initial={{ opacity: 0.5 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              style={{ marginTop: '10vh'}}
+            >
+              <SuccessScreen />
+              <span className={styles.closeArea} onClick={closeSuccessScreen}></span>
+            </motion.div>
+          }
+        </AnimatePresence>
         <div className={styles.headerBottom}></div>
       </motion.div>
       {/* {

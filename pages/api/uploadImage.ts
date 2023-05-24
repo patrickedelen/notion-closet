@@ -19,7 +19,9 @@ interface RequestForm {
   body: {
     timesWorn: string,
     cost: string,
-    name: string
+    name: string,
+    age: string,
+    type: string
   }
 }
 
@@ -77,7 +79,13 @@ uploadRoute.post(async (req: RequestForm, res: NextApiResponse) => {
           "number": parseInt(req.body.timesWorn)
         },
         "Cost": {
-          "number": parseInt(req.body.cost)
+          "rich_text": [
+            {
+            "text": {
+              "content": req.body.cost
+            }
+            }
+          ]
         },
         "Name": {
           "title": [
@@ -87,7 +95,25 @@ uploadRoute.post(async (req: RequestForm, res: NextApiResponse) => {
             }
             }
           ]
-        }
+        },
+        "Type": {
+          "rich_text": [
+            {
+            "text": {
+              "content": req.body.type
+            }
+            }
+          ]
+        },
+        "Age": {
+          "rich_text": [
+            {
+            "text": {
+              "content": req.body.age
+            }
+            }
+          ]
+        },
       }
     })
 
