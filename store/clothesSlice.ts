@@ -19,7 +19,9 @@ const initialState = {
     },
     itemUploading: false,
     uploadData: null,
-    successScreenOpen: false
+    successScreenOpen: false,
+    filtering: false,
+    filterType: '',
 }
 
 async function urltoFile(url, filename, mimeType){
@@ -158,6 +160,18 @@ export const clothesSlice = createSlice({
         },
         setSuccessScreen: (state, action) => {
             state.successScreenOpen = action.payload
+        },
+        setFilter: (state, action) => {
+            const { type } = action.payload
+            console.log('in the action', type, state.filteringType)
+
+            if (state.filterType === type) {
+                state.filtering = false
+                state.filterType = ''
+            } else {
+                state.filtering = true
+                state.filterType = type
+            }
         }
     },
     extraReducers: (builder) => {
@@ -189,6 +203,14 @@ export const selectItem = (state) => state.clothes.newItem
 export const selectFormOpen = (state) => state.clothes.formOpen
 export const selectFormType = (state) => state.clothes.formType
 export const selectNewItem = (state) => state.clothes.newItem
+export const selectFilteredClothes = (state) => {
+    return state.clothes.filtering ?
+        state.clothes.data.filter(item => item.type === state.clothes.filterType) :
+        state.clothes.data
+}
+export const selectFiltering = (state) => state.filtering
+export const selectFilterType = (state) => state.clothes.filterType
+
 
 export const selectItemById = (id) => (state) => {
     console.log('selectItemById', id)
@@ -198,6 +220,6 @@ export const selectItemById = (id) => (state) => {
 export const selectItemUploading = (state) => state.clothes.itemUploading
 export const selectSuccessScreenOpen = (state) => state.clothes.successScreenOpen
 
-export const { setFormState, setNewName, setGenericNew, setImage, setSuccessScreen } = clothesSlice.actions
+export const { setFormState, setNewName, setGenericNew, setImage, setSuccessScreen, setFilter } = clothesSlice.actions
 
 export default clothesSlice.reducer

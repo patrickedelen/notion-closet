@@ -72,7 +72,7 @@ export default function UploadPageDeferred() {
             }, 250)
         }
     }, [webcamRef])
-    
+
     useEffect(() => {
         checkUserPerms()
     }, [checkUserPerms])
@@ -104,7 +104,7 @@ export default function UploadPageDeferred() {
             }, 1000)
         } else {
             setWebcamIsOpen(false)
-            const image = webcamRef.current.getScreenshot({ width: 1920, height: 1080 })
+            const image = webcamRef.current.getScreenshot()
             setImageB64(image)
             setImageTaken(true)
             setWebcamIsOpen(false)
@@ -158,11 +158,13 @@ export default function UploadPageDeferred() {
                         audio={false}
                         screenshotFormat="image/jpeg"
                         videoConstraints={videoConstraints}
+                        forceScreenshotSourceSize={true}
+                        screenshotQuality={1}
                     />)
                 }
                 {
                     imageB64 && (
-                        <Image className={styles.uploadedImage} src={imageB64} width="350" height="263" alt="" />
+                        <Image className={styles.uploadedImage} src={imageB64} width="380" height="263" alt="" />
                     )
                 }
             </div>
@@ -182,7 +184,7 @@ export default function UploadPageDeferred() {
             </div>
 
             <div className={styles.uploadButtonContainer}>
-                <HeroButton title={"upload"} onClick={uploadClothes} valid={formValid} />
+                <HeroButton title={"upload"} onClick={uploadClothes} valid={formValid} loading={true} />
             </div>
         </div>
     )

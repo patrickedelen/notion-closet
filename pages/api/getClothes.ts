@@ -47,6 +47,7 @@ const getClothes = async (_: NextApiRequest, res: NextApiResponse) => {
           cost: page?.properties["Cost"].rich_text[0]?.text?.content,
           name: page?.properties["Name"].title[0]?.text?.content,
           imageUrl: page.properties["Image Link"].url,
+          type: page?.properties["Type"].rich_text[0]?.text?.content,
           id: page.id
         }
         return { "msg": "error" }

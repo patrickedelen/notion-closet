@@ -8,6 +8,8 @@ import { Provider } from "react-redux";
 import { ThemeProvider } from 'next-themes'
 import Header from "@/components/header/Header";
 import HeaderCloseBar from "@/components/header/HeaderCloseBar";
+import { Analytics } from '@vercel/analytics/react';
+import Head from 'next/head'
 
 import { wrapper } from '../store/store'
 
@@ -52,12 +54,18 @@ function App({ Component, pageProps, ...rest}: { Component: any, pageProps: any,
   const { store, props } = wrapper.useWrappedStore(rest)
   return (
     // <NextThemesProvider value={{ 'dark': theme }}>
+    <>
+      <Head>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=0" />
+      </Head>
       <NextUIProvider>
         <Provider store={store}>
           <Header />
           <Component {...pageProps} />
         </Provider>
+        <Analytics />
       </NextUIProvider>
+    </>
     // </NextThemesProvider>
   );
 }

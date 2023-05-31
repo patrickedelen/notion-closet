@@ -1,6 +1,6 @@
-.shadowHeader {
+.header {
     height: 110px;
-    transition: all 0.2s ease;
+    position: relative;
 }
 .shadowHeaderClothesBar {
     height: 20vh;
@@ -13,7 +13,7 @@
     width: 100%;
     top: 0;
     left: 0;
-    z-index: 100;
+    z-index: 1000;
     background-color: #010101;
 
     display: flex;

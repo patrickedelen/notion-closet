@@ -39,9 +39,15 @@
 
 .uploadWebcam {
     border-radius: 10px;
+    object-fit: cover;
 }
+.uploadWebcam > video {
+    object-fit: cover;
+}
+
 .uploadedImage {
     border-radius: 10px;
+    object-fit: cover;
 }
 
 

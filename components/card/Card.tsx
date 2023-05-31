@@ -8,12 +8,14 @@ import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 
+import CustomIcon from '@/components/customIcon'
+
 import { isWearingItem, addItem, removeItem } from '../../store/outfitSlice';
 
 const ImageWithFallback = (props) => {
     const { src, fallbackSrc, ...rest } = props;
     const [imgSrc, setImgSrc] = useState(src);
-    const [fallbackStyle, setFallbackStyle] = useState('');
+    const [imageClass, setImageClass] = useState(styles.image);
     const [fallbackTries, setFallbackTries] = useState(0);
 
     const pollForFullImage = () => {
@@ -25,7 +27,7 @@ const ImageWithFallback = (props) => {
                     .then((res) => {
                         if (res.ok) {
                             setImgSrc(src)
-                            setFallbackStyle('')
+                            setImageClass('')
                         } else {
                             pollForFullImage()
                         }
@@ -35,7 +37,7 @@ const ImageWithFallback = (props) => {
                     })
             }, 5000)
         } else {
-            setFallbackStyle(styles.fallbackImage)
+            setImageClass(styles.fallbackImage)
         }
     }
     
@@ -45,12 +47,12 @@ const ImageWithFallback = (props) => {
             {...rest}
             src={imgSrc}
             onError={() => {
-                setFallbackStyle(styles.fallbackImage)
+                setImageClass(styles.fallbackImage)
                 setImgSrc(fallbackSrc)
                 // pollForFullImage() -- fix
             }}
             alt="clothing item"
-            className={[styles.image, fallbackStyle]}
+            className={imageClass}
         />
     );
 };
@@ -60,7 +62,7 @@ const variants = {
     wearing: { scale: [1, 1.05, 1], background: 'linear-gradient(90deg, #69035F 40.02%, #001839 80.98%)', transition: { duration: 0.25 } },
 };
 
-export default function Card({ url, name, id}: { url: string, name: string, id: string }) {
+export default function Card({ url, name, id, type }: { url: string, name: string, id: string, type: string }) {
     const dispatch = useDispatch()
 
     const wearing = useSelector(isWearingItem(id))
@@ -79,13 +81,16 @@ export default function Card({ url, name, id}: { url: string, name: string, id: 
     
     return (
         <div className={styles.cardContainer} key={id}>
+            <div className={styles.icon}>
+                <CustomIcon type={type} />
+            </div>
             <ImageWithFallback src={heroUrl} fallbackSrc={url} alt={name} height={250} />
             <Row justify='center'>
                 <motion.button
                     onClick={handleClick}
                     variants={variants}
                     animate={wearing ? 'wearing' : 'wear'}
-                    initial={'wear'}
+                    initial={false}
                     className={styles.cardButton}
                     >
                     {wearing ? 'Wearing!' : 'Wear'}

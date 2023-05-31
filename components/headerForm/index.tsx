@@ -2,7 +2,8 @@
 import { motion } from 'framer-motion'
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faShirt, faHatCowboy, faShoePrints, faSnowflake, faTableColumns } from '@fortawesome/free-solid-svg-icons'
+import { faShirt, faHatCowboy, faShoePrints, faSnowflake, faTableColumns, faArrowUp } from '@fortawesome/free-solid-svg-icons'
+import CustomIcon from '@/components/customIcon'
 
 import { useSelector, useDispatch } from "react-redux"
 import { selectFormType, setFormState, setGenericNew } from "../../store/clothesSlice";
@@ -41,11 +42,11 @@ const types = {
             'OTHER'
         ],
         icons: [
-            <FontAwesomeIcon icon={faShirt} size="2x" key="1" />,
-            <FontAwesomeIcon icon={faTableColumns} size="2x" key="2" />,
-            <FontAwesomeIcon icon={faSnowflake} size="2x" key="3" />,
-            <FontAwesomeIcon icon={faShoePrints} size="2x" key="4" />,
-            <FontAwesomeIcon icon={faHatCowboy} size="2x" key="5"/>,
+            <CustomIcon type="TOP" key="1" />,
+            <CustomIcon type="BOTTOM" key="2" />,
+            <CustomIcon type="OUTER" key="3" />,
+            <CustomIcon type="SHOE" key="4" />,
+            <CustomIcon type="OTHER" key="5" />
         ],
         title: 'what type of piece is this?'
     },
@@ -127,7 +128,7 @@ export default function HeaderForm() {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
             >
-                close
+                <FontAwesomeIcon icon={faArrowUp} size="xl" onClick={closeForm} />
             </motion.button>
         </motion.div>
     )

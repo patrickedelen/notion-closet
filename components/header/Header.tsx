@@ -18,13 +18,22 @@ import HeaderForm from '@/components/headerForm'
 import SuccessScreen from '@/components/successScreen'
 import ClothesBar from '@/components/clothesBar'
 
+import Filter from '@/components/filter'
+
 import { useSelector, useDispatch } from "react-redux"
 import { selectFormOpen, setFormState, selectSuccessScreenOpen } from "../../store/clothesSlice";
 import { selectShowClothesBar, selectOutfitFormOpen } from "../../store/outfitSlice";
 
 const PlusLink = () => {
   return (
-      <Link className={styles.uploadLink} href="/upload">+</Link>
+    <Link className={styles.uploadLink} href="/upload">
+      <motion.span
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+        >
+        +
+      </motion.span>
+    </Link>
   )
 }
 
@@ -77,13 +86,15 @@ export default function Header() {
   console.log('formOpen', formOpen)
   console.log('clothes info', showClothesBar, outfitFormOpen)
 
-  const headerHeight = formOpen || successScreenOpen  ? '90vh' : outfitFormOpen ? '30vh' : showClothesBar ? '20vh' : '100px'
-  const shadowHeaderHeight = showClothesBar ? '20vh' : '100px'
+  const headerHeight = formOpen || successScreenOpen  ? '90vh' : outfitFormOpen ? '250px' : showClothesBar ? '180px' : '100px'
+  const shadowHeaderHeight = '100px'
 
   console.log('header height', headerHeight)
 
   return (
-    <motion.header animate={{ height: shadowHeaderHeight }}>
+    <header className={styles.header}>
+
+
       <motion.div 
         animate={{
           height: headerHeight,
@@ -92,10 +103,20 @@ export default function Header() {
       >
         <div className={styles.headerRow}>
           <Link href="/" className={styles.titleLarge}>
-            What are you wearing today?
+            <motion.span
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+            >
+              What are you wearing today?
+            </motion.span>
           </Link>
           <Link href="/" className={styles.titleSmall}>
-            WYWT?
+            <motion.span
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+            >
+              WYWT?
+            </motion.span>
           </Link>
           <PlusLink />
         </div>
@@ -129,7 +150,20 @@ export default function Header() {
             </motion.div>
           }
         </AnimatePresence>
-
+        <AnimatePresence>
+          {
+            (!outfitFormOpen && !showClothesBar) && (
+              <motion.div
+                initial={{ opacity: 0.5 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              >
+                <Filter />
+              </motion.div>
+              
+            )
+            }
+        </AnimatePresence>
         <ClothesBar />
 
         <div className={styles.headerBottom}></div>
@@ -139,6 +173,7 @@ export default function Header() {
 
         </span>
       } */}
-    </motion.header>
+
+    </header>
   );
 }

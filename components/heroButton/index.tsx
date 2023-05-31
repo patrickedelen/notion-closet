@@ -1,5 +1,6 @@
 // @ts-nocheck
 import { motion } from 'framer-motion'
+import { Loading } from '@nextui-org/react'
 
 import styles from './heroButton.module.css'
 
@@ -8,7 +9,7 @@ const variants = {
     valid: { scale: [1, 1.05, 1], background: 'linear-gradient(90deg, #69035F 40.02%, #001839 80.98%)', transition: { duration: 0.25 } },
 };
 
-export default function HeroButton({ title, onClick, valid = false }) {
+export default function HeroButton({ title, onClick, valid = false, loading = false }) {
     return (
         <motion.button
             onClick={onClick}
@@ -20,7 +21,13 @@ export default function HeroButton({ title, onClick, valid = false }) {
             disabled={!valid}
             animate={valid ? 'valid' : 'invalid'}
         >
-            { title }
+            {
+                loading ? (
+                    <Loading type="points" color="currentColor" size="md" />
+                ) : (
+                    title
+                )
+            }
         </motion.button>
     )
 }

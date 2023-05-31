@@ -24,3 +24,8 @@ a {
     color: white;
   }
 }
+
+button {
+  box-shadow: 3px 3px 3px rgba(0,0,0,0.7) !important;
+  border: none !important;
+}
