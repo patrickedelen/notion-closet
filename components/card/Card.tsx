@@ -10,7 +10,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import CustomIcon from '@/components/customIcon'
 
-import { isWearingItem, addItem, removeItem } from '../../store/outfitSlice';
+import { isWearingItem, addItem, removeItem, isWearingType, replaceItem } from '../../store/outfitSlice';
 
 const ImageWithFallback = (props) => {
     const { src, fallbackSrc, ...rest } = props;
@@ -66,6 +66,8 @@ export default function Card({ url, name, id, type }: { url: string, name: strin
     const dispatch = useDispatch()
 
     const wearing = useSelector(isWearingItem(id))
+    const typeBeingWorn = useSelector(isWearingType(type))
+
     console.log('isWearing', wearing)
     const [heroFound, setHeroFound] = useState(false)
     const heroUrl = url.replace('notion-closet', 'wywt-output') + '-hero'
@@ -73,16 +75,18 @@ export default function Card({ url, name, id, type }: { url: string, name: strin
 
     const handleClick = () => {
         if (wearing) {
-            dispatch(removeItem(id))
+            dispatch(removeItem({ id: id, type: type }))
+        } else if (typeBeingWorn) {
+            dispatch(replaceItem({ id: id, type: type }))
         } else {
-            dispatch(addItem(id))
+            dispatch(addItem({ id: id, type: type }))
         }
     }
     
     return (
         <div className={styles.cardContainer} key={id}>
             <div className={styles.icon}>
-                <CustomIcon type={type} />
+                <CustomIcon type={type} checked={typeBeingWorn} />
             </div>
             <ImageWithFallback src={heroUrl} fallbackSrc={url} alt={name} height={250} />
             <Row justify='center'>
@@ -91,9 +95,9 @@ export default function Card({ url, name, id, type }: { url: string, name: strin
                     variants={variants}
                     animate={wearing ? 'wearing' : 'wear'}
                     initial={false}
-                    className={styles.cardButton}
+                    className={(typeBeingWorn && !wearing) ? styles.cardButtonDisabled : styles.cardButton}
                     >
-                    {wearing ? 'Wearing!' : 'Wear'}
+                    {wearing ? 'Wearing!': (typeBeingWorn && !wearing) ? 'Wear Instead' : 'Wear'}
                 </motion.button>
             </Row>
         </div>

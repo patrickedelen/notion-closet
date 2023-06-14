@@ -2,10 +2,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 const initialState = {
-    itemIds: [],
+    items: [
+        // { id: 1, type: 'TOP' },
+    ],
     loading: false,
     submitted: false,
-    headerBarOpen: false,
     outfitFormOpen: false,
 }
 
@@ -16,10 +17,25 @@ export const outfitSlice = createSlice({
     initialState,
     reducers: {
         addItem: (state, action) => {
-            state.itemIds.push(action.payload);
+            state.items.push({
+                id: action.payload.id,
+                type: action.payload.type,
+            })
         },
         removeItem: (state, action) => {
-            state.itemIds = state.itemIds.filter(id => id !== action.payload);
+            console.log()
+            state.items = state.items.filter(item => item.id !== action.payload.id)
+        },
+        replaceItem: (state, action) => {
+            state.items = state.items.map(item => {
+                if (item.type === action.payload.type) {
+                    return {
+                        ...item,
+                        id: action.payload.id,
+                    }
+                }
+                return item
+            })
         },
         setHeaderBarOpen: (state, action) => {
             state.headerBarOpen = action.payload;
@@ -36,16 +52,20 @@ export const outfitSlice = createSlice({
     }
 })
 
-export const selectOutfitIds = (state) => state.outfit.itemIds
-export const selectShowClothesBar = (state) => state.outfit.itemIds.length > 0
+export const selectOutfitIds = (state) => state.outfit.items.map(item => item.id)
+export const selectWearingCount = (state) => state.outfit.items.length
+export const selectShowClothesBar = (state) => state.outfit.items.length > 0
 export const clothesHeaderOpen = (state) => state.outfit.headerBarOpen
 export const selectOutfitFormOpen = (state) => state.outfit.outfitFormOpen
 
 export const isWearingItem = (id) => (state) => {
-    return state.outfit.itemIds.includes(id)
+    return state.outfit.items.filter(item => item.id === id).length > 0
+}
+export const isWearingType = (type) => (state) => {
+    return state.outfit.items.filter(item => item.type === type).length > 0
 }
 
-export const { addItem, removeItem, setHeaderBarOpen, setOutfitFormOpen, resetState } = outfitSlice.actions
+export const { addItem, removeItem, setHeaderBarOpen, setOutfitFormOpen, resetState, replaceItem } = outfitSlice.actions
 
 export default outfitSlice.reducer
 

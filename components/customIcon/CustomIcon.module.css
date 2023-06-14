@@ -1,0 +1,8 @@
+.checkedSvg > svg {
+    opacity: 0.2;
+}
+.checkedFa {
+    position: absolute;
+    left: 4px;
+    top: 2px;
+}

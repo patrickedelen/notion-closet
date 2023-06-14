@@ -27,6 +27,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    width: 100%;
 }
 
 .headerBottom {
@@ -61,7 +62,6 @@
     margin: 0;
     color: white;
     height: 100px;
-    transition: 0.25 all ease;
 }
 .titleSmall {
     font-style: normal;
@@ -74,36 +74,52 @@
     margin: 0;
     color: white;
     height: 100px;
-    transition: 0.25 all ease;
 }
 
-.titleLarge:hover {
-    color: white;
-    opacity: 1;
-    font-size: 45px;
+.spacer {
+    flex-grow: 1;
 }
-.titleSmall:hover {
+.spacerEnd {
+    flex-grow: 1;
+}
+
+.titleLarge:hover, .titleSmall:hover {
     color: white;
     opacity: 1;
-    font-size: 55px;
+}
+
+.absoluteContainer {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    flex-direction: row;
+    margin-right: 15px;
 }
 
 .uploadLink {
     font-weight: 700;
-    font-size: 80px;
+    font-size: 60px;
+    line-height: 100px;
     color: white;
-    position: absolute;
-    right: 20px;
-    top: -5px;
-    transition: 0.1s all ease;
-    height: 100px;
+    width: 60px;
 }
 
 .uploadLink:hover {
     color: white;
-    font-size: 90px;
-    top: -7px;
-    right: 17px;
+    opacity: 1;
+
+}
+
+.clothesLink {
+    font-weight: 700;
+    font-size: 60px;
+    line-height: 90px;
+    color: white;
+    width: 60px;
+}
+.clothesLink:hover {
+    color: white;
     opacity: 1;
 
 }

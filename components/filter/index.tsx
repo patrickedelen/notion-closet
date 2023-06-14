@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faBarsStaggered, faCircle } from '@fortawesome/free-solid-svg-icons'
 
 import { motion, AnimatePresence } from "framer-motion"
-import { useState, useCallback } from "react"
+import { useState, useCallback, useRef, useEffect } from "react"
 
 import CustomIcon from '@/components/customIcon'
 
@@ -34,10 +34,13 @@ const ActiveCircle = () => {
     )
 }
 
+
 export default function Filter() {
+
+    const containerRef = useRef(null)
+
     const dispatch = useDispatch()
 
-    const filtering = useSelector(selectFiltering)
     const filterType = useSelector(selectFilterType)
 
     // state for open filter
@@ -45,6 +48,26 @@ export default function Filter() {
 
     const [open, setOpen] = useState(false)
     const toggle = () => setOpen(!open)
+
+    useEffect(() => {
+        function handleOutsideClick(event) {
+            if (containerRef.current && !containerRef.current.contains(event.target)) {
+                setOpen(false)
+            }
+        }
+        function handleScroll() {
+            setOpen(false)
+        }
+
+        document.addEventListener('mousedown', handleOutsideClick)
+        document.addEventListener('scroll', handleScroll)
+
+        return () => {
+            document.removeEventListener('mousedown', handleOutsideClick)
+            document.addEventListener('scroll', handleScroll)
+        }
+    })
+
 
     const onClickFilter = (type) => {
         console.log('filtering on ', type)
@@ -58,6 +81,7 @@ export default function Filter() {
             className={styles.container}
             animate={open ? 'open' : 'closed'}
             variants={variants}
+            ref={containerRef}
         >
             <motion.button
                 onClick={toggle}

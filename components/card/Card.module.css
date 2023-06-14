@@ -13,7 +13,7 @@
 
 .cardButton {
     border-radius: 10px;
-    width: 142px;
+    width: 160px;
     height: 52px;
     font-style: normal;
     font-weight: 700;
@@ -22,6 +22,22 @@
     text-align: center;
     color: #FFFFFF; 
     margin-top: 15px;
+    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.25) !important;
+    transition: 0.25s all ease;
+}
+.cardButtonDisabled {
+    border-radius: 10px;
+    width: 160px;
+    height: 52px;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 30px;
+    text-align: center;
+    color: #FFFFFF; 
+    margin-top: 15px;
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.25) !important;
+    transition: 0.25s all ease;
 }
 
 .fallbackImage > img {

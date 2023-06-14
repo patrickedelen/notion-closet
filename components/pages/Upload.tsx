@@ -18,7 +18,7 @@ import styles from './Upload.module.css'
 import Image from "next/image";
 
 import { useSelector, useDispatch } from "react-redux"
-import { setNewName, setFormState, selectNewItem, setImage, addItem } from '../../store/clothesSlice'
+import { setNewName, setFormState, selectNewItem, setImage, addItem, selectItemUploading } from '../../store/clothesSlice'
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCamera } from '@fortawesome/free-solid-svg-icons'
@@ -49,6 +49,7 @@ export default function UploadPageDeferred() {
     const [webcamIsOpen, setWebcamIsOpen] = useState(false)
     const [imageTaken, setImageTaken] = useState(false)
     const nameRef = useRef(null)
+    const uploadLoading = useSelector(selectItemUploading)
 
     const newItem = useSelector(selectNewItem)
 
@@ -184,7 +185,7 @@ export default function UploadPageDeferred() {
             </div>
 
             <div className={styles.uploadButtonContainer}>
-                <HeroButton title={"upload"} onClick={uploadClothes} valid={formValid} loading={true} />
+                <HeroButton title={"upload"} onClick={uploadClothes} valid={formValid} loading={uploadLoading} />
             </div>
         </div>
     )
