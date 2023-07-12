@@ -1,11 +1,23 @@
 .loadingContainer {
-    position: absolute;
-    width: calc(100% - 40px);
+    width: 100%;
     margin: 200px auto;
     display: flex;
     align-items: center;
     justify-content: center;
     filter: drop-shadow(2px 2px 2px grey);
+}
+
+.cardGrid {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+@media screen and (min-width: 768px) {
+    .cardGrid {
+        row-gap: 40px;
+    }
 }
 
 .cardGrid:first-child {

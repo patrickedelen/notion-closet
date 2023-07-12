@@ -94,7 +94,7 @@ export default function ClothesPageDeferred() {
             exit={{ opacity: 0, y: -100 }}
             >
                 <FontAwesomeIcon icon={faShirt} size="7x" color="black" className="fa-bounce" />
-              </motion.div>
+            </motion.div>
           )
         }
         </AnimatePresence>
@@ -105,7 +105,7 @@ export default function ClothesPageDeferred() {
           !loading && (
             <AnimatePresence>
             {clothesData.map((el: ClothesItem, i) => (
-              <Grid xs={12} sm={6} md={4} justify='center' key={el.id} style={{ padding: 0, marginTop: '20px' }}>
+              <Grid xs={12} sm={6} md={4} xl={3} justify='center' key={el.id} style={{ padding: 0, marginTop: '20px' }}>
                 <motion.div
                   key={el.id}
                   variants={variants}
@@ -114,7 +114,7 @@ export default function ClothesPageDeferred() {
                   exit="hidden"
                   custom={i}
                 >
-                  <Card url={el.imageUrl} name={el.name} id={el.id} type={el.type} />
+                  <Card url={el.imageUrl} heroUrl={el.heroUrl} name={el.name} id={el.id} type={el.type} />
                 </motion.div>
               </Grid>
             ))}

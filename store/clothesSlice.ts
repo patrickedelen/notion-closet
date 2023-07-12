@@ -182,7 +182,13 @@ export const clothesSlice = createSlice({
             .addCase(getClothes.fulfilled, (state, action) => {
                 console.log('getClothes fulfilled', action)
                 state.loading = false
-                state.data = action.payload
+                // update with hero image here as well
+                state.data = action.payload.map((item) => {
+                    return {
+                        ...item,
+                        heroUrl: item.imageUrl.replace('notion-closet', 'wywt-output') + '-hero.png'
+                    }
+                })
             })
             .addCase(addItem.pending, state => {
                 state.itemUploading = true

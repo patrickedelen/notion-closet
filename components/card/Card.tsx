@@ -2,8 +2,9 @@
 // @ts-nocheck
 import styles from './Card.module.css'
 import { Image } from '@nextui-org/react'
-import { Text, Button, Row } from "@nextui-org/react";
+import { Text, Button, Row, Tooltip } from "@nextui-org/react";
 import { motion } from 'framer-motion'
+import axios from 'axios'
 
 import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
@@ -13,29 +14,30 @@ import CustomIcon from '@/components/customIcon'
 import { isWearingItem, addItem, removeItem, isWearingType, replaceItem } from '../../store/outfitSlice';
 
 const ImageWithFallback = (props) => {
-    const { src, fallbackSrc, ...rest } = props;
+    const { src, fallbackSrc, title, ...rest } = props;
     const [imgSrc, setImgSrc] = useState(src);
     const [imageClass, setImageClass] = useState(styles.image);
     const [fallbackTries, setFallbackTries] = useState(0);
-
+    
     const pollForFullImage = () => {
-        if (fallbackTries < 10) {
+        if (fallbackTries < 60) {
             setFallbackTries(fallbackTries + 1);
 
             setTimeout(() => {
-                fetch(src, { mode: 'no-cors', method: 'HEAD' })
+                fetch(src, { method: 'HEAD' })
                     .then((res) => {
                         if (res.ok) {
                             setImgSrc(src)
-                            setImageClass('')
+                            setImageClass(styles.image)
                         } else {
                             pollForFullImage()
                         }
                     })
                     .catch((error) => {
+                        console.log('error', error)
                         pollForFullImage()
                     })
-            }, 5000)
+            }, 1500)
         } else {
             setImageClass(styles.fallbackImage)
         }
@@ -43,17 +45,19 @@ const ImageWithFallback = (props) => {
     
 
     return (
-        <Image
-            {...rest}
-            src={imgSrc}
-            onError={() => {
-                setImageClass(styles.fallbackImage)
-                setImgSrc(fallbackSrc)
-                // pollForFullImage() -- fix
-            }}
-            alt="clothing item"
-            className={imageClass}
-        />
+        <Tooltip content={title} style={{ width: '100%', zIndex: '50' }}>
+            <Image
+                {...rest}
+                src={imgSrc}
+                onError={() => {
+                    setImageClass(styles.fallbackImage)
+                    setImgSrc(fallbackSrc)
+                    pollForFullImage()
+                }}
+                alt="clothing item"
+                className={imageClass}
+            />
+        </Tooltip>
     );
 };
 
@@ -62,16 +66,11 @@ const variants = {
     wearing: { scale: [1, 1.05, 1], background: 'linear-gradient(90deg, #69035F 40.02%, #001839 80.98%)', transition: { duration: 0.25 } },
 };
 
-export default function Card({ url, name, id, type }: { url: string, name: string, id: string, type: string }) {
+export default function Card({ url, heroUrl, name, id, type }: { url: string, heroUrl: string, name: string, id: string, type: string }) {
     const dispatch = useDispatch()
 
     const wearing = useSelector(isWearingItem(id))
     const typeBeingWorn = useSelector(isWearingType(type))
-
-    console.log('isWearing', wearing)
-    const [heroFound, setHeroFound] = useState(false)
-    const heroUrl = url.replace('notion-closet', 'wywt-output') + '-hero'
-    // const heroUrl = 'https://wywt-output.s3.amazonaws.com/testimg7.webp-hero'
 
     const handleClick = () => {
         if (wearing) {
@@ -88,7 +87,7 @@ export default function Card({ url, name, id, type }: { url: string, name: strin
             <div className={styles.icon}>
                 <CustomIcon type={type} checked={typeBeingWorn} />
             </div>
-            <ImageWithFallback src={heroUrl} fallbackSrc={url} alt={name} height={250} />
+            <ImageWithFallback src={heroUrl} fallbackSrc={url} title={name} alt={name} height={250} />
             <Row justify='center'>
                 <motion.button
                     onClick={handleClick}

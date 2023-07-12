@@ -185,7 +185,7 @@ export default function UploadPageDeferred() {
             </div>
 
             <div className={styles.uploadButtonContainer}>
-                <HeroButton title={"upload"} onClick={uploadClothes} valid={formValid} loading={uploadLoading} />
+                <HeroButton title={"upload"} onClick={uploadClothes} valid={formValid && !uploadLoading} loading={uploadLoading} />
             </div>
         </div>
     )

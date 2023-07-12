@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { motion, AnimatePresence, LayoutGroup } from 'framer-motion'
-import { Image, Badge } from '@nextui-org/react'
+import { Image, Badge, Loading } from '@nextui-org/react'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 
@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faArrowDown, faX } from '@fortawesome/free-solid-svg-icons'
 
 import { useSelector, useDispatch } from "react-redux"
-import { selectOutfitIds, selectOutfitFormOpen, selectShowClothesBar, setHeaderBarOpen, resetState, removeItem, selectWearingCount, setOutfitFormOpen } from "../../store/outfitSlice"
+import { selectOutfitIds, selectOutfitFormOpen, selectShowClothesBar, setHeaderBarOpen, resetState, removeItem, selectWearingCount, setOutfitFormOpen, createOutfit, selectNotionUrl } from "../../store/outfitSlice"
 import { selectItemById } from '../../store/clothesSlice'
 
 
@@ -78,7 +78,7 @@ const ClothesItem = ({ id }) => {
 
     console.log(item)
 
-    const heroUrl = item.imageUrl.replace('notion-closet', 'wywt-output') + '-hero'
+    const heroUrl = item.heroUrl
 
     const listItem = {
         hidden: { opacity: 0, scale: 0.9 },
@@ -128,24 +128,38 @@ export default function HeaderForm() {
 
     const outfitFormOpen = useSelector(selectOutfitFormOpen)
     const showClothesBar = useSelector(selectShowClothesBar)
+    const notionUrl = useSelector(selectNotionUrl)
+    const [submitting, setSubmitting] = useState(false)
 
     const clothesIds = useSelector(selectOutfitIds)
     console.log(clothesIds)
+
+    const resetOutfit = () => {
+        dispatch(resetState())
+    }
 
     const toggleOutfitForm = () => {
         dispatch(setOutfitFormOpen(!outfitFormOpen))
     }
 
-    const submitOutfit = () => {
-        console.log('submitting outfit')
-        setTimeout(() => {
-            setTitle('submitted!')
 
-            setTimeout(() => {
-                dispatch(resetState())
-                setTitle('confirm')
-            }, 1000)
-        }, 500)
+    const submitOutfit = () => {
+        dispatch(createOutfit())
+        setSubmitting(true)
+        console.log('submitting outfit')
+        setTitle('submitted!')
+        // setTimeout(() => {
+
+        //     setTimeout(() => {
+        //         dispatch(resetState())
+        //         setTitle('confirm')
+        //     }, 1000)
+        // }, 500)
+    }
+
+    const openPage = () => {
+        dispatch(resetState())
+        window.open(notionUrl, '_blank')
     }
 
     const containerVariants = {
@@ -164,23 +178,42 @@ export default function HeaderForm() {
             <AnimatePresence>
                 {
                     outfitFormOpen && (
-                        <motion.div className={styles.barContainer} initial={{opacity: 0}} 
+                        <motion.div key="a" className={styles.barContainer} initial={{opacity: 0}} 
                         animate={{opacity: 1}} exit={{opacity: 0}}
                         >
+                            <AnimatePresence>
                         {
                             clothesIds.map((id, i) => (
                                 <ClothesItem id={id} key={id} outfitFormOpen={outfitFormOpen} />
                             ))
                         }
-                        <div className={styles.submitButtonContainer}>
+                        </AnimatePresence>
+                        <motion.div className={styles.submitButtonContainer}>
+                            {notionUrl ? (
+                                <motion.button key="b"
+                                    initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.15 }} onClick={openPage} className={styles.confirmButton}
+                                    whileHover={{ scale: 1.1 }}
+                                    whileTap={{ scale: 0.75 }}
+                                >
+                                    Visit Page
+                                </motion.button>
+                            ) : (
+                                <>
+                            <motion.button initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.15 }} onClick={submitOutfit} className={styles.confirmButton}
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.75 }}
+                            >
+                                {submitting ? (<Loading type="points" color="currentColor" size="md" />) : title}
+                            </motion.button><motion.button initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.15 }} onClick={resetOutfit} className={styles.confirmButton}
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.75 }}
+                            >
+                                clear
+                            </motion.button>
+                                </>
+                            )}
 
-                        <motion.button initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.15 }} onClick={submitOutfit} className={styles.confirmButton}
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.75 }}
-                        >
-                            {title}
-                        </motion.button>
-                        </div>
+                        </motion.div>
                         
 
                         </motion.div>

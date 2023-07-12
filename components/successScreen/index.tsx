@@ -27,7 +27,7 @@ export default function SuccessScreen() {
             animate={{ opacity: 1, y: 0 }}
         >
             <h1>item uploaded :)</h1>
-            <h3>processing now...</h3>
+            <h5>image processing now, give it a minute...</h5>
 
             <motion.button
                 className={styles.close}

@@ -52,20 +52,20 @@ const types = {
     },
     'cost': {
         items: [
-            '200+',
-            '100',
-            '50',
-            '20',
-            '10'
+            '$200+',
+            '$100',
+            '$50',
+            '$20',
+            '$10'
         ],
         title: 'how much did it cost?'
     },
     'age': {
         items: [
-            '<3mo',
-            '3-6mo',
-            '~1yr',
-            '1+ years'
+            '<6mo',
+            '6-12mo',
+            '1yr+',
+            '2yr+'
         ],
         title: 'when did you get it?'
     }

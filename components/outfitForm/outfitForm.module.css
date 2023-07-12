@@ -112,12 +112,25 @@
     align-items: center;
     justify-content: center;
 }
-
 .image {
     height: 150px;
     width: 150px;
     border-radius: 5px;
 }
+
+@media screen and (min-width: 768px) {
+    .clothesItem {
+        height: 300px;
+        width: 300px;
+    }
+    .image {
+        height: 300px;
+        width: 300px;
+        border-radius: 5px;
+    }
+}
+
+
 
 .image > img {
     object-fit: cover;
@@ -137,6 +150,9 @@
 .submitButtonContainer {
     position: absolute;
     bottom: 40px;
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
 }
 
 .confirmButton {
@@ -145,7 +161,7 @@
     border-radius: 5px;
     color: black;
     width: 180px;
-    margin: 15px 100px;
+    margin: 15px 15px 5px 15px;
     height: 60px;
     font-size: 26px;
     font-weight: 600;

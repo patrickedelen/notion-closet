@@ -1,5 +1,6 @@
 // @ts-nocheck
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
 
 const initialState = {
     items: [
@@ -8,9 +9,60 @@ const initialState = {
     loading: false,
     submitted: false,
     outfitFormOpen: false,
+    notionUrl: null
 }
 
 // add thunk for dispatch create outfit
+export const createOutfit = createAsyncThunk(
+    'outfit/createOutfit',
+    async (_, { getState }) => {
+
+        const outfitItems = getState().outfit.items
+        const clothesItems = getState().clothes.data
+
+        const req = {}
+
+        outfitItems.forEach(item => {
+            req[item.type] = {
+                id: item.id,
+                url: clothesItems.find(clothesItem => clothesItem.id === item.id).heroUrl
+            }
+        })
+
+        console.log('in action', outfitItems, clothesItems)
+        console.log('req', req)
+
+        try {
+
+            const data = await axios.post(
+                `/api/uploadOutfit`,
+                req
+            )
+    
+            console.log('in action', data)
+            return data
+        } catch (err) {
+            console.log('got error in action', err)
+        }
+        return {
+            status: "ok"
+        }
+
+        // try {
+        //     const response = await fetch('/api/uploadOutfit', {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //         },
+        //         body: JSON.stringify(payload),
+        //     });
+        //     const data = await response.json();
+        //     return data;
+        // } catch (error) {
+        //     return thunkAPI.rejectWithValue(error.message);
+        // }
+    }
+);
 
 export const outfitSlice = createSlice({
     name: 'outfit',
@@ -45,10 +97,23 @@ export const outfitSlice = createSlice({
         },
         resetState: (state) => {
             console.log('resetState');
-            state.itemIds = []
+            state.items = []
             state.headerBarOpen = false
             state.outfitFormOpen = false
+            state.notionUrl = null
+            state.submitted = false
         }
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(createOutfit.pending, (state) => {
+                state.loading = true
+            })
+            .addCase(createOutfit.fulfilled, (state, action) => {
+                state.loading = false
+                state.notionUrl = action.payload.data.url
+                console.log('got fulfilled')
+            })
     }
 })
 
@@ -57,6 +122,7 @@ export const selectWearingCount = (state) => state.outfit.items.length
 export const selectShowClothesBar = (state) => state.outfit.items.length > 0
 export const clothesHeaderOpen = (state) => state.outfit.headerBarOpen
 export const selectOutfitFormOpen = (state) => state.outfit.outfitFormOpen
+export const selectNotionUrl = (state) => state.outfit.notionUrl
 
 export const isWearingItem = (id) => (state) => {
     return state.outfit.items.filter(item => item.id === id).length > 0

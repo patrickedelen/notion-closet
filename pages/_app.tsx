@@ -11,20 +11,16 @@ import HeaderCloseBar from "@/components/header/HeaderCloseBar";
 import { Analytics } from '@vercel/analytics/react';
 import Head from 'next/head'
 
+import Layout from '../layouts/main'
+
 import { wrapper } from '../store/store'
 
 
 import '../styles/globals.css'
 
-import headerStyles from '@/components/header/Header.module.css'
-import cardStyles from '@/components/card/Card.module.css'
-import uploadStyles from '@/components/pages/Upload.module.css'
-import heroButtonStyles from '@/components/heroButton/HeroButton.module.css'
-
-console.log('loading styles')
-console.log(headerStyles)
-console.log(cardStyles)
-console.log(uploadStyles)
+import '@/components/header/Header.module.css'
+import '@/components/card/Card.module.css'
+import '@/components/pages/Upload.module.css'
 
 
 import { Outfit } from 'next/font/google'
@@ -60,8 +56,9 @@ function App({ Component, pageProps, ...rest}: { Component: any, pageProps: any,
       </Head>
       <NextUIProvider>
         <Provider store={store}>
-          <Header />
-          <Component {...pageProps} />
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
         </Provider>
         <Analytics />
       </NextUIProvider>

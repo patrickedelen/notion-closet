@@ -10,12 +10,11 @@
     width: 80px;
 
     display: flex;
-    justify-content: center;
     align-items: center;
     flex-direction: column;
 
     z-index: 1000;
-    padding-top: 8px;
+    padding-top: 12px;
 }
 
 .buttonMain {
